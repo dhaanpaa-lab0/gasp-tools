@@ -1,0 +1,20 @@
+[Unit]
+Description=Node.js sysd-demo service
+
+[Service]
+Environment=NODE_ENV=production HAPPY=1
+WorkingDirectory=/sdp/apps/sysd-demo
+ExecStart=/usr/bin/npm start
+Restart=always
+User=your-username
+# Consider adding Group= if your application needs to run under a specific group
+# Group=your-group
+
+# Standard output/error logging
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=sysd-demo
+
+[Install]
+WantedBy=multi-user.target
+
