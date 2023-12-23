@@ -21,3 +21,14 @@
     src: platform-bin/
     dest: /gasp-platform/bin
     mode: "u=rwx,g=rwx"
+
+- name: Ensure that vimrc exists (RedHat Family Distros)
+  template:
+    src: vimrc.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - /etc/vimrc
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
