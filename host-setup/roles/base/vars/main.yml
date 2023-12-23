@@ -1,0 +1,13 @@
+---
+gasp_dirs:
+  - /gasp-platform
+  - /gasp-platform/bin
+  - /gasp-platform/logs
+  - /gasp-platform/apps
+
+gasp_packages:
+  - vim-enhanced
+  - git
+  - wget
+  - unzip
+  - curl

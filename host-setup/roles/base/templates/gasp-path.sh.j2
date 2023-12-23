@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+echo "Setting up Generic App Server Platform variables ..."
+
+function add_to_path() {
+  # Add the directory to PATH only if it exists
+  if [ -d "$1" ]; then
+    PATH="$1:$PATH"
+  fi
+}
+
+# Example usage of the function
+add_to_path "/gasp-platform/bin"
+
+export PATH
+

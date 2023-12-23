@@ -1,0 +1,100 @@
+---
+- name: Ensure Unix Groups Are Present
+  group:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - wheel
+    - admins
+    - denplatform
+    - nexusplatform
+    - sdpplatform
+
+- name: Allow 'wheel' group to have passwordless sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Create a new regular user with sudo privileges
+  user:
+    name: "{{ item }}"
+    state: present
+    groups: wheel
+    append: true
+    password: '$6$T0aKHqZvRoQkQ9ty$rfCI1OCq6tDoIr4Pig3GXHmmxWQK/RI8q49apkhzak4je9tJLtcwAyfh7jT3rOkOV9ao9lvTqNH2.R79VM2Se1'
+    create_home: true
+    shell: /bin/bash
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+  with_items: "{{ create_users }}"
+
+- name: users | adding users to required groups
+  user:
+    name: "{{ item }}"
+    append: yes
+    groups: denplatform,nexusplatform,admins
+  become: true
+  with_items: "{{ create_users }}"
+
+- name: Set authorized key for remote user
+  authorized_key:
+    user: "{{ item }}"
+    state: present
+    key: "{{ copy_local_key }}"
+  with_items: "{{ create_users }}"
+
+- name: Disable password authentication for root
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    state: present
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin prohibit-password'
+
+- name: Update apt
+  apt: update_cache=yes
+  when:
+    - "'Debian' in ansible_facts['distribution'] or 'Ubuntu' in ansible_facts['distribution']"
+
+
+- name: Install required system packages
+  package:
+    name: "{{ item }}"
+  with_items: "{{ sys_packages }}"
+
+- name: Ensure that vimrc exists (Debian Family Distros)
+  template:
+    src: vimrc.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - /etc/vimrc
+    - /etc/vim/vimrc.local
+  when: ansible_os_family == 'Debian'
+
+- name: Ensure that vimrc exists (SuSE Family Distros)
+  template:
+    src: vimrc.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - /etc/vimrc
+  when: ansible_os_family == 'Suse'
+
+- name: Ensure that vimrc exists (RedHat Family Distros)
+  template:
+    src: vimrc.j2
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop:
+    - /etc/vimrc
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'

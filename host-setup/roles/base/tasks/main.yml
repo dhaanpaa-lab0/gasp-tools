@@ -1,0 +1,23 @@
+---
+- name: Copy Generic Application Server Platform Profile Setup file
+  template:
+    src: gasp-path.sh.j2
+    dest: /etc/profile.d/gasp-path.sh
+    owner: root
+    group: root
+    mode: "a+x"
+
+- name: Ensure that the Generic Application Server Platform Directories Exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: "u=rwx,g=rwx"
+  loop: "{{ gasp_dirs }}"
+
+- name: Install Generic Application Server Platform Scripts
+  copy:
+    src: platform-bin/
+    dest: /gasp-platform/bin
+    mode: "u=rwx,g=rwx"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+SDP_DATA_ROOT=.
+SDP_DATA_HOSTS=$SDP_DATA_ROOT/hosts
+PLAYBOOK=$1
+
+if [ ! -f "$SDP_DATA_ROOT/$PLAYBOOK.ansible.yml" ]; then
+    echo "Playbook: $PLAYBOOK not found"
+    exit 1
+fi
+
+if [ -f $SDP_DATA_HOSTS ]; then
+    cd $SDP_DATA_ROOT || exit
+    ansible-playbook -b "$PLAYBOOK.ansible.yml"
+fi
