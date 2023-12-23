@@ -22,6 +22,12 @@
     dest: /gasp-platform/bin
     mode: "u=rwx,g=rwx"
 
+- name: Install Generic Application Server Platform Packages
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ gasp_packages }}"
+
 - name: Ensure that vimrc exists (RedHat Family Distros)
   template:
     src: vimrc.j2
