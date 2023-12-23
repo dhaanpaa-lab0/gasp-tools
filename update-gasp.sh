@@ -16,3 +16,12 @@ mkdir gasp-root
 cd gasp-root || exit
 wget https://github.com/dhaanpaa-lab0/gasp-tools/archive/refs/heads/main.zip -O gasp-tools.zip
 unzip gasp-tools.zip
+
+
+echo "------------------------------------------------------------------------------------------"
+echo "                 SCRIPT FINISHED SUCCESSFULLY"
+echo "------------------------------------------------------------------------------------------"
+echo "GASP Host Setup Tools now installed in /tmp/gasp-root/gasp-tools-main"
+echo "To run the tools, change to that directory and run ./preqs.sh if not already done on the host"
+echo "then run ./gasp.sh"
+echo "------------------------------------------------------------------------------------------"
