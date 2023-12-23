@@ -10,4 +10,3 @@ gasp_packages:
   - git
   - wget
   - unzip
-  - curl
