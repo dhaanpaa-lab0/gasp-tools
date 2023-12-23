@@ -4,9 +4,11 @@ gasp_dirs:
   - /gasp-platform/bin
   - /gasp-platform/logs
   - /gasp-platform/apps
+  - /gasp-platform/setup
 
 gasp_packages:
   - vim-enhanced
   - git
   - wget
   - unzip
+  - jq

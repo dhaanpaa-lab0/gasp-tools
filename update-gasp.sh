@@ -8,7 +8,7 @@ fi
 if [ -d "./gasp-tools-main" ]; then
   rm -rfv ./gasp-tools-main
 fi
-
+cd "$HOME" || exit
 
 rm -rfv /tmp/gasp-root
 cd /tmp || exit

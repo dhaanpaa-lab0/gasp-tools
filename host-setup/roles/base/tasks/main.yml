@@ -39,3 +39,26 @@
   loop:
     - /etc/vimrc
   when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
+
+- name: Download Node.js setup script
+  get_url:
+    url: https://rpm.nodesource.com/setup_20.x
+    dest: /tmp/setup_node.sh
+    mode: "0755"
+
+- name: Run Node.js setup script
+  command: sh /tmp/setup_node.sh
+
+- name: Install Node.js
+  yum:
+    name: nodejs
+    state: present
+
+- name: Verify Node.js installation
+  command: node --version
+  register: node_version
+  changed_when: false
+
+- name: Print Node.js version
+  debug:
+    msg: "Node.js version installed: {{ node_version.stdout }}"
