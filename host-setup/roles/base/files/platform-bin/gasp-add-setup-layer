@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+
+tar_file="$1.tar.gz"
+if [ -z "$1" ]; then
+    echo "Usage: $0 <tar-file>"
+    exit 1
+fi
+
+if [ ! -f "$tar_file" ]; then
+    echo "Platform Layer file not found: $tar_file"
+    exit 1
+fi
+
+extract_dir="/gasp-platform/setup"
+
+if tar -tf "$tar_file" | grep -q "^roles/"; then
+    tar -xvf "$tar_file" -C "$extract_dir" 
+    echo "Extracted GASP Platform layer package file: $tar_file"
+else
+    echo "Not a valid GASP Platform layer package file: $tar_file"
+fi

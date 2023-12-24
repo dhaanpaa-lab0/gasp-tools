@@ -63,7 +63,7 @@
   debug:
     msg: "Node.js version installed: {{ node_version.stdout }}"
 
-- name: Setup the ansible local folder
+- name: Setup the ansible setup folder
   synchronize:
-    src: /tmp/gasp-root/gasp-tools-main/host-setup
+    src: /tmp/gasp-root/gasp-tools-main/host-setup/
     dest: /gasp-platform/setup
