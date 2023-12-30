@@ -61,7 +61,7 @@
   dnf:
     name: nodejs
     state: present
-
+    allowerasing: true
     update_cache: true
 
 - name: Verify Node.js installation
