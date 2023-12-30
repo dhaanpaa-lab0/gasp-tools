@@ -40,22 +40,29 @@
     - /etc/vimrc
   when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
 
-- name: Add NodeSource repository
-  copy:
-    dest: /etc/yum.repos.d/nodesource.repo
-    content: |
-      [nodesource]
-      name=NodeSource Node.js Repository
-      baseurl=https://rpm.nodesource.com/pub_20.x/el/$releasever/$basearch
-      enabled=1
-      gpgcheck=1
-      gpgkey=https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
+- name: Import NodeSource GPG key
+  rpm_key:
+    state: present
+    key: https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
 
-- name: Install Node.js
-  yum:
+- name: Install NodeSource repository
+  get_url:
+    url: https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm
+    dest: /tmp/nodesource-release-nodistro-1.noarch.rpm
+
+- name: Install the NodeSource repository RPM
+  dnf:
+    name: /tmp/nodesource-release-nodistro-1.noarch.rpm
+    state: present
+    update_cache: true
+    disable_gpg_check: true
+
+- name: Install Node.js with module hotfixes
+  dnf:
     name: nodejs
     state: present
-    enablerepo: nodesource
+
+    update_cache: true
 
 - name: Verify Node.js installation
   command: node --version
