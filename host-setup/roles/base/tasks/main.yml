@@ -54,6 +54,7 @@
   yum:
     name: /tmp/nodesource-release-nodistro-1.noarch.rpm
     state: present
+    disable_gpg_check: true
 
 - name: Install Node.js with module hotfixes
   yum:
