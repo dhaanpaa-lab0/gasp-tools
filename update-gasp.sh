@@ -25,3 +25,7 @@ echo "GASP Host Setup Tools now installed in /tmp/gasp-root/gasp-tools-main"
 echo "To run the tools, change to that directory and run ./preqs.sh if not already done on the host"
 echo "then run ./gasp.sh"
 echo "------------------------------------------------------------------------------------------"
+
+cd /tmp/gasp-root/gasp-tools-main || exit
+./preqs.sh
+./gasp.sh

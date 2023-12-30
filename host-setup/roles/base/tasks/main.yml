@@ -45,7 +45,7 @@
     state: present
     key: https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
 
-- name: Install NodeSource repository
+- name: Download NodeSource repository setup RPM
   get_url:
     url: https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm
     dest: /tmp/nodesource-release-nodistro-1.noarch.rpm
@@ -56,12 +56,11 @@
     state: present
     disable_gpg_check: true
 
-- name: Install Node.js with module hotfixes
+- name: Install Node.js
   yum:
     name: nodejs
     state: present
     enablerepo: nodesource
-    setopt: module_hotfixes=1
 
 - name: Verify Node.js installation
   command: node --version
