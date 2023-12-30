@@ -40,6 +40,11 @@
     - /etc/vimrc
   when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
 
+- name: Import NodeSource GPG key
+  rpm_key:
+    state: present
+    key: https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL
+
 - name: Install NodeSource repository
   get_url:
     url: https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm
