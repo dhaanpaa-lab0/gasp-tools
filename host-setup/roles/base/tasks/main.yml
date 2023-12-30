@@ -40,19 +40,22 @@
     - /etc/vimrc
   when: ansible_os_family == 'RedHat' or ansible_os_family == 'Rocky'
 
-- name: Download Node.js setup script
+- name: Install NodeSource repository
   get_url:
-    url: https://rpm.nodesource.com/setup_20.x
-    dest: /tmp/setup_node.sh
-    mode: "0755"
+    url: https://rpm.nodesource.com/pub_20.x/nodistro/repo/nodesource-release-nodistro-1.noarch.rpm
+    dest: /tmp/nodesource-release-nodistro-1.noarch.rpm
 
-- name: Run Node.js setup script
-  command: sh /tmp/setup_node.sh
+- name: Install the NodeSource repository RPM
+  yum:
+    name: /tmp/nodesource-release-nodistro-1.noarch.rpm
+    state: present
 
-- name: Install Node.js
+- name: Install Node.js with module hotfixes
   yum:
     name: nodejs
     state: present
+    enablerepo: nodesource
+    setopt: module_hotfixes=1
 
 - name: Verify Node.js installation
   command: node --version
